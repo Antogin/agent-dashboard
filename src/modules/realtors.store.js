@@ -21,7 +21,7 @@ const actions = {
       commit("setAgencies", data);
     });
   },
-  selectAgency({ commit }, id) {
+  getAgency({ commit }, id) {
     axios.get(`http://localhost:8080/realtors/${id}`).then(({ data }) => {
       commit("setAgency", data);
     });

@@ -12,15 +12,15 @@
       </v-btn>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" v-on="on">{{
-            agency ? agency.name : null
-          }}</v-btn>
+          <v-btn color="primary" v-on="on">
+            {{ agency ? agency.name : null }}
+          </v-btn>
         </template>
         <v-list>
           <v-list-tile
             v-for="(item, index) in agenciesList"
             :key="index"
-            @click="selectAgency(item.id)"
+            :to="`/agency/${item.id}`"
           >
             <v-list-tile-title>{{ item.name }}</v-list-tile-title>
           </v-list-tile>
@@ -39,13 +39,16 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
+  mounted() {
+    this.getAgencies();
+  },
   data() {
     return {
       //
     };
   },
   methods: {
-    ...mapActions(["selectAgency"])
+    ...mapActions(["getAgency", "getAgencies"])
   },
   computed: {
     ...mapGetters(["agenciesList", "agency"])
