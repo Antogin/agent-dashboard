@@ -1,7 +1,7 @@
 <template>
   <v-layout row :class="$route.params.messageId ? 'show-message': null">
     <v-flex class="message-list" xs12 sm4>
-      <v-card>
+      <v-card class="message-card" v-on:scroll.passive="onScroll">
         <v-list two-line>
           <template v-for="(message, index) in messages">
             <v-list-tile
@@ -17,7 +17,6 @@
                 <v-list-tile-title>{{ message.contact | formatContact(message.type) }}</v-list-tile-title>
                 <v-list-tile-title>{{ message.body }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">{{ message.subject }}</v-list-tile-sub-title>
-                <!-- <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title> -->
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-list-tile-action-text>{{ message.date | formatDate }}</v-list-tile-action-text>
@@ -46,11 +45,24 @@ export default {
   },
   data() {
     return {
-      selected: [2]
+      fetching: false
     };
   },
   methods: {
-    ...mapActions(["getAgency", "getMessages"])
+    ...mapActions(["getAgency", "getMessages", "loadMoreMessages"]),
+    onScroll(e) {
+      const { fetching } = this;
+      const { scrollHeight, scrollTop, offsetHeight } = e.srcElement;
+
+      if (!fetching && offsetHeight + scrollTop >= scrollHeight - 2) {
+        const { agencyId } = this.$route.params;
+
+        this.fetching = true;
+        this.loadMoreMessages(agencyId).then(data => {
+          this.fetching = false;
+        });
+      }
+    }
   },
   computed: {
     ...mapGetters(["messages"])
@@ -58,6 +70,7 @@ export default {
   watch: {
     "$route.params.agencyId": function(agencyId) {
       this.getAgency(agencyId);
+      this.getMessages(agencyId);
     }
   },
   filters: {
@@ -85,11 +98,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.message-card {
+  height: calc(100vh - 64px);
+  overflow-y: scroll;
+}
+@media only screen and (max-width: 960px) {
+  .message-card {
+    height: calc(100vh - 48px);
+    overflow-y: scroll;
+  }
+}
 @media only screen and (max-width: 600px) {
   .show-message {
     .message-list {
       display: none;
     }
+  }
+  .message-card {
+    height: calc(100vh - 56px);
+    overflow-y: scroll;
   }
 }
 </style>
