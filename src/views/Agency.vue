@@ -1,10 +1,15 @@
 <template>
-  <v-layout row>
-    <v-flex xs12 sm4>
+  <v-layout row :class="$route.params.messageId ? 'show-message': null">
+    <v-flex class="message-list" xs12 sm4>
       <v-card>
         <v-list two-line>
           <template v-for="(message, index) in messages">
-            <v-list-tile :key="message.id" avatar ripple>
+            <v-list-tile
+              :key="message.id"
+              avatar
+              ripple
+              :to="`/agency/${$route.params.agencyId}/message/${message.id}`"
+            >
               <v-list-tile-action>
                 <v-icon>{{message.type}}</v-icon>
               </v-list-tile-action>
@@ -23,6 +28,9 @@
         </v-list>
       </v-card>
     </v-flex>
+    <div class="pa-5 message-view">
+      <router-view/>
+    </div>
   </v-layout>
 </template>
 
@@ -75,3 +83,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@media only screen and (max-width: 600px) {
+  .show-message {
+    .message-list {
+      display: none;
+    }
+  }
+}
+</style>
