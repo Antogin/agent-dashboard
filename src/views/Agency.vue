@@ -8,6 +8,7 @@
               :key="message.id"
               avatar
               ripple
+              :class="!message.read ? 'read': null"
               :to="`/agency/${$route.params.agencyId}/message/${message.id}`"
             >
               <v-list-tile-action>
@@ -15,14 +16,16 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title
-                  :class="!message.read ? 'font-weight-bold': null"
-                >{{ message.contact | formatContact(message.type) }}</v-list-tile-title>
+                  :class="[!message.read ? 'font-weight-bold': null, 'list-title']. join(' ')"
+                >
+                  {{ message.contact | formatContact(message.type) }}
+                  <span
+                    class="date"
+                  >{{ message.date | formatDate }}</span>
+                </v-list-tile-title>
                 <v-list-tile-title>{{ message.body }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">{{ message.subject }}</v-list-tile-sub-title>
               </v-list-tile-content>
-              <v-list-tile-action>
-                <v-list-tile-action-text>{{ message.date | formatDate }}</v-list-tile-action-text>
-              </v-list-tile-action>
             </v-list-tile>
             <v-divider v-if="index + 1 < messages.length" :key="index"></v-divider>
           </template>
@@ -100,10 +103,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.list-title {
+  span {
+    float: right;
+    color: #1b5098;
+  }
+}
+
+.v-list {
+  .v-icon {
+    color: #ccc;
+  }
+
+  .read {
+    .v-icon {
+      color: #1b5098;
+    }
+  }
+}
+
 .message-card {
   height: calc(100vh - 64px);
   overflow-y: scroll;
 }
+
 @media only screen and (max-width: 960px) {
   .message-card {
     height: calc(100vh - 48px);

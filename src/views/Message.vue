@@ -2,12 +2,23 @@
   <v-flex xs12 v-if="message">
     <v-card>
       <v-layout>
-        <v-card-title primary-title>
-          <div>
-            <div class="headline">{{`${message.contact.firstname} ${message.contact.lastname}`}}</div>
-            <div>Email {{message.contact.email}}</div>
-            <div>Phone {{message.contact.phone}}</div>
+        <v-card-title primary-title class="max-width card-title">
+          <div class="mx-2">
+            <v-icon size="15" color="primary">{{message.type}}</v-icon>
           </div>
+          <v-flex>
+            <div
+              class="title font-weight-bold"
+            >{{`${message.contact.firstname} ${message.contact.lastname}`}}</div>
+            <v-flex class="d-flex">
+              <v-flex xs6>Email</v-flex>
+              <v-flex class="email" xs6>{{message.contact.email}}</v-flex>
+            </v-flex>
+            <v-flex class="d-flex">
+              <v-flex xs6>Téléphone</v-flex>
+              <v-flex class="phone" xs6>{{message.contact.phone}}</v-flex>
+            </v-flex>
+          </v-flex>
         </v-card-title>
       </v-layout>
     </v-card>
@@ -15,8 +26,10 @@
       <v-layout>
         <v-card-title primary-title>
           <div>
-            <div class="headline">{{`${message.contact.firstname} ${message.contact.lastname}`}}</div>
-            <div>{{message.date | formatDate}}</div>
+            <div
+              class="title font-weight-bold"
+            >{{`${message.contact.firstname} ${message.contact.lastname}`}}</div>
+            <div class="my-3">{{message.date | formatDate}}</div>
             <div>{{message.body}}</div>
           </div>
         </v-card-title>
@@ -56,3 +69,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.card-title {
+  align-items: baseline;
+}
+.email,
+.phone {
+  color: #1b5098;
+}
+</style>

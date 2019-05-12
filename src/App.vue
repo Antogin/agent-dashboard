@@ -1,18 +1,23 @@
 <template>
   <v-app>
-    <v-toolbar app>
+    <v-toolbar color="primary" class="white--text">
       <v-toolbar-title>
-        <span>MeilleursAgents</span>
-        <span class="font-weight-light">PRO 3</span>
+        <span class="title">MeilleursAgents PRO</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="agency" color="blue-grey" class="white--text">
+      <v-chip v-if="agency" :color="agency.unread_messages? 'accent' : 'grey'" text-color="white">
+        <v-icon left dark>mail</v-icon>
         {{ agency.unread_messages }}
-        <v-icon right dark>message</v-icon>
-      </v-btn>
+      </v-chip>
+      <div class="vertical-divider"/>
+      <v-avatar v-if="agency" size="30">
+        <img :src="agency.logo" alt="logo">
+      </v-avatar>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" v-on="on">{{ agency ? agency.name : null }}</v-btn>
+          <v-btn small class="dropdown-button" flat fab v-on="on">
+            <v-icon class="white--text">arrow_drop_down</v-icon>
+          </v-btn>
         </template>
         <v-list>
           <v-list-tile
@@ -56,5 +61,32 @@ export default {
 <style lang="scss">
 html {
   overflow: hidden;
+}
+
+.max-width {
+  width: 100%;
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 100%;
+  background-color: white;
+  margin: 0 8px;
+}
+
+.dropdown-button {
+  margin: 0;
+}
+
+.v-chip .v-icon--left {
+  margin-left: 0;
+  border-radius: 10px;
+}
+
+@media only screen and (max-width: 959px) {
+  .v-toolbar__content,
+  .v-toolbar__extension {
+    padding: 0 8px;
+  }
 }
 </style>
