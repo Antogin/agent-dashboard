@@ -1,5 +1,5 @@
 <template>
-  <v-layout row :class="$route.params.messageId ? 'show-message': null">
+  <v-layout row :class="$route.params.messageId ? 'show-message' : null">
     <v-flex class="message-list" xs12 sm4>
       <v-card class="message-card" v-on:scroll.passive="onScroll">
         <v-list two-line>
@@ -8,32 +8,40 @@
               :key="message.id"
               avatar
               ripple
-              :class="!message.read ? 'read': null"
+              :class="!message.read ? 'read' : null"
               :to="`/agency/${$route.params.agencyId}/message/${message.id}`"
             >
               <v-list-tile-action>
-                <v-icon>{{message.type}}</v-icon>
+                <v-icon>{{ message.type }}</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title
-                  :class="[!message.read ? 'font-weight-bold': null, 'list-title']. join(' ')"
+                  :class="
+                    [
+                      !message.read ? 'font-weight-bold' : null,
+                      'list-title'
+                    ].join(' ')
+                  "
                 >
                   {{ message.contact | formatContact(message.type) }}
-                  <span
-                    class="date"
-                  >{{ message.date | formatDate }}</span>
+                  <span class="date">{{ message.date | formatDate }}</span>
                 </v-list-tile-title>
                 <v-list-tile-title>{{ message.body }}</v-list-tile-title>
-                <v-list-tile-sub-title class="text--primary">{{ message.subject }}</v-list-tile-sub-title>
+                <v-list-tile-sub-title class="text--primary">
+                  {{ message.subject }}
+                </v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-divider v-if="index + 1 < messages.length" :key="index"></v-divider>
+            <v-divider
+              v-if="index + 1 < messages.length"
+              :key="index"
+            ></v-divider>
           </template>
         </v-list>
       </v-card>
     </v-flex>
     <div class="pa-5 message-view">
-      <router-view/>
+      <router-view />
     </div>
   </v-layout>
 </template>
@@ -63,7 +71,7 @@ export default {
         const { agencyId } = this.$route.params;
 
         this.fetching = true;
-        this.loadMoreMessages(agencyId).then(data => {
+        this.loadMoreMessages(agencyId).then(() => {
           this.fetching = false;
         });
       }

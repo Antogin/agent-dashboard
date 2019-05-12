@@ -7,18 +7,18 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     ...realtorStore.state,
-    ...messagesStore.state,
+    ...messagesStore.state
   },
   mutations: {
     ...realtorStore.mutations,
-    ...messagesStore.mutations,
+    ...messagesStore.mutations
   },
   actions: {
     ...realtorStore.actions,
-    ...messagesStore.actions,
+    ...messagesStore.actions
   },
   getters: {
     ...realtorStore.getters,
-    ...messagesStore.getters,
+    ...messagesStore.getters
   }
 });

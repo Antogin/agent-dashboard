@@ -5,14 +5,19 @@
         <span class="title">MeilleursAgents PRO</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-chip v-if="agency" :color="agency.unread_messages? 'accent' : 'grey'" text-color="white">
+      <v-chip
+        v-if="agency"
+        :color="agency.unread_messages ? 'accent' : 'grey'"
+        text-color="white"
+      >
         <v-icon left dark>mail</v-icon>
         {{ agency.unread_messages }}
       </v-chip>
-      <div class="vertical-divider"/>
+      <div class="vertical-divider" />
       <v-avatar v-if="agency" size="30">
-        <img :src="agency.logo" alt="logo">
+        <img :src="agency.logo" alt="logo" />
       </v-avatar>
+      <div v-if="agency" class="agency-name">{{ agency.name }}</div>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small class="dropdown-button" flat fab v-on="on">
@@ -32,7 +37,7 @@
     </v-toolbar>
 
     <v-content>
-      <router-view/>
+      <router-view />
     </v-content>
   </v-app>
 </template>
@@ -67,6 +72,10 @@ html {
   width: 100%;
 }
 
+.agency-name {
+  margin: 0 3px;
+}
+
 .vertical-divider {
   width: 1px;
   height: 100%;
@@ -82,7 +91,11 @@ html {
   margin-left: 0;
   border-radius: 10px;
 }
-
+@media only screen and (max-width: 600px) {
+  .agency-name {
+    display: none;
+  }
+}
 @media only screen and (max-width: 959px) {
   .v-toolbar__content,
   .v-toolbar__extension {

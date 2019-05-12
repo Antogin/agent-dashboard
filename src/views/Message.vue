@@ -1,36 +1,36 @@
 <template>
   <v-flex xs12 v-if="message">
-    <v-card>
+    <v-card flat>
       <v-layout>
         <v-card-title primary-title class="max-width card-title">
           <div class="mx-2">
-            <v-icon size="15" color="primary">{{message.type}}</v-icon>
+            <v-icon size="15" color="primary">{{ message.type }}</v-icon>
           </div>
           <v-flex>
-            <div
-              class="title font-weight-bold"
-            >{{`${message.contact.firstname} ${message.contact.lastname}`}}</div>
+            <div class="title font-weight-bold">
+              {{ `${message.contact.firstname} ${message.contact.lastname}` }}
+            </div>
             <v-flex class="d-flex">
               <v-flex xs6>Email</v-flex>
-              <v-flex class="email" xs6>{{message.contact.email}}</v-flex>
+              <v-flex class="email" xs6>{{ message.contact.email }}</v-flex>
             </v-flex>
             <v-flex class="d-flex">
               <v-flex xs6>Téléphone</v-flex>
-              <v-flex class="phone" xs6>{{message.contact.phone}}</v-flex>
+              <v-flex class="phone" xs6>{{ message.contact.phone }}</v-flex>
             </v-flex>
           </v-flex>
         </v-card-title>
       </v-layout>
     </v-card>
-    <v-card class="my-2">
+    <v-card flat class="my-2">
       <v-layout>
         <v-card-title primary-title>
           <div>
-            <div
-              class="title font-weight-bold"
-            >{{`${message.contact.firstname} ${message.contact.lastname}`}}</div>
-            <div class="my-3">{{message.date | formatDate}}</div>
-            <div>{{message.body}}</div>
+            <div class="title font-weight-bold">
+              {{ `${message.contact.firstname} ${message.contact.lastname}` }}
+            </div>
+            <div class="my-3">{{ message.date | formatDate }}</div>
+            <div>{{ message.body }}</div>
           </div>
         </v-card-title>
       </v-layout>
@@ -60,7 +60,7 @@ export default {
     }
   },
   watch: {
-    "$route.params.messageId": function(agencyId) {
+    "$route.params.messageId": function() {
       this.getMessage({
         agencyId: this.$route.params.agencyId,
         messageId: this.$route.params.messageId

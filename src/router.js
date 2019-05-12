@@ -18,13 +18,14 @@ export default new Router({
       name: "agency",
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/Agency.vue"),
-      children: [{
-        path: "message/:messageId",
-        name: "message",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "./views/Message.vue")
-      }]
-    },
-
+      children: [
+        {
+          path: "message/:messageId",
+          name: "message",
+          component: () =>
+            import(/* webpackChunkName: "about" */ "./views/Message.vue")
+        }
+      ]
+    }
   ]
 });
