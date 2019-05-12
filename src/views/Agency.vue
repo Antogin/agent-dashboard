@@ -3,32 +3,22 @@
     <v-flex xs12 sm4>
       <v-card>
         <v-list two-line>
-          <template v-for="(item, index) in items">
-            <v-list-tile :key="item.title" avatar ripple @click="toggle(index)">
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                <v-list-tile-sub-title class="text--primary">
-                  {{ item.headline }}
-                </v-list-tile-sub-title>
-                <v-list-tile-sub-title>
-                  {{ item.subtitle }}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-
+          <template v-for="(message, index) in messages">
+            <v-list-tile :key="message.id" avatar ripple>
               <v-list-tile-action>
-                <v-list-tile-action-text>
-                  {{ item.action }}
-                </v-list-tile-action-text>
-                <v-icon
-                  v-if="selected.indexOf(index) < 0"
-                  color="grey lighten-1"
-                  >star_border</v-icon
-                >
-
-                <v-icon v-else color="yellow darken-2">star</v-icon>
+                <v-icon>{{message.type}}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ message.contact | formatContact(message.type) }}</v-list-tile-title>
+                <v-list-tile-title>{{ message.body }}</v-list-tile-title>
+                <v-list-tile-sub-title class="text--primary">{{ message.subject }}</v-list-tile-sub-title>
+                <!-- <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title> -->
+              </v-list-tile-content>
+              <v-list-tile-action>
+                <v-list-tile-action-text>{{ message.date | formatDate }}</v-list-tile-action-text>
               </v-list-tile-action>
             </v-list-tile>
-            <v-divider v-if="index + 1 < items.length" :key="index"></v-divider>
+            <v-divider v-if="index + 1 < messages.length" :key="index"></v-divider>
           </template>
         </v-list>
       </v-card>
@@ -37,59 +27,50 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import * as moment from "moment";
 
 export default {
   mounted() {
     const { agencyId } = this.$route.params;
     this.getAgency(agencyId);
+    this.getMessages(agencyId);
   },
   data() {
     return {
-      selected: [2],
-      items: [
-        {
-          action: "15 min",
-          headline: "Brunch this weekend?",
-          title: "Ali Connors",
-          subtitle:
-            "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-        },
-        {
-          action: "2 hr",
-          headline: "Summer BBQ",
-          title: "me, Scrott, Jennifer",
-          subtitle: "Wish I could come, but I'm out of town this weekend."
-        },
-        {
-          action: "6 hr",
-          headline: "Oui oui",
-          title: "Sandra Adams",
-          subtitle: "Do you have Paris recommendations? Have you ever been?"
-        },
-        {
-          action: "12 hr",
-          headline: "Birthday gift",
-          title: "Trevor Hansen",
-          subtitle:
-            "Have any ideas about what we should get Heidi for her birthday?"
-        },
-        {
-          action: "18hr",
-          headline: "Recipe to try",
-          title: "Britta Holt",
-          subtitle:
-            "We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
-        }
-      ]
+      selected: [2]
     };
   },
   methods: {
-    ...mapActions(["getAgency"])
+    ...mapActions(["getAgency", "getMessages"])
+  },
+  computed: {
+    ...mapGetters(["messages"])
   },
   watch: {
     "$route.params.agencyId": function(agencyId) {
       this.getAgency(agencyId);
+    }
+  },
+  filters: {
+    formatContact: function(contact, type) {
+      if (type === "email") {
+        if (contact.firstname && contact.lastname) {
+          return `${contact.firstname} ${contact.lastname}`;
+        } else {
+          return `${contact.email}`;
+        }
+      } else {
+        if (contact.firstname && contact.lastname) {
+          return `${contact.firstname} ${contact.lastname} (${contact.phone})`;
+        } else {
+          return `${contact.phone}`;
+        }
+      }
+    },
+    formatDate: function(date) {
+      moment.locale("fr");
+      return moment(date).fromNow();
     }
   }
 };

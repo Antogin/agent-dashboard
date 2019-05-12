@@ -1,19 +1,30 @@
+import * as axios from "axios";
+
 const state = {
-  messages: []
+    messages: []
 };
 const getters = {
-  isAdmin() {}
+    messages(state) {
+        return state.messages
+    }
 };
 const actions = {
-  login() {}
+    getMessages({ commit }, agencyId) {
+        axios.get(`http://localhost:8080/realtors/${agencyId}/messages`).then(({ data }) => {
+            console.log(data)
+            commit("setMessages", data);
+        });
+    }
 };
 const mutations = {
-  login() {}
+    setMessages(state, payload) {
+        state.messages = payload
+    }
 };
 
 export const messagesStore = {
-  state,
-  getters,
-  actions,
-  mutations
+    state,
+    getters,
+    actions,
+    mutations
 };
