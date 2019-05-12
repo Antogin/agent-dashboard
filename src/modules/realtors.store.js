@@ -33,6 +33,10 @@ const mutations = {
   },
   setAgency(state, payload) {
     state.agency = payload;
+  },
+  decrementMessageCount(state, payload) {
+    state.agencies[payload].unread_messages--
+    state.agency.unread_messages--
   }
 };
 

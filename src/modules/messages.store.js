@@ -48,6 +48,13 @@ const actions = {
 
         axios.get(`http://localhost:8080/realtors/${agencyId}/messages/${messageId}`).then(({ data }) => {
             commit("setMessage", data);
+            const body = { read: 1 }
+            if (!data.read) {
+                axios.post(`http://localhost:8080/realtors/${agencyId}/messages/${messageId}`, body).then(() => {
+                    commit("setMessageRead", data.id);
+                    commit("decrementMessageCount", agencyId);
+                })
+            }
         })
     }
 };
@@ -59,6 +66,17 @@ const mutations = {
     appendMessages(state, payload) {
         state.messages = state.messages.concat(payload)
         state.page++
+    },
+    setMessageRead(state, payload) {
+        state.messages = state.messages.map((message) => {
+            if (message.id === payload) {
+                return {
+                    ...message,
+                    read: true
+                }
+            }
+            return message
+        })
     },
     setMessage(state, payload) {
         state.message = payload

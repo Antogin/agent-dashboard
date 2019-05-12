@@ -14,7 +14,9 @@
                 <v-icon>{{message.type}}</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ message.contact | formatContact(message.type) }}</v-list-tile-title>
+                <v-list-tile-title
+                  :class="!message.read ? 'font-weight-bold': null"
+                >{{ message.contact | formatContact(message.type) }}</v-list-tile-title>
                 <v-list-tile-title>{{ message.body }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">{{ message.subject }}</v-list-tile-sub-title>
               </v-list-tile-content>
